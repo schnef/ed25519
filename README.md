@@ -1,7 +1,7 @@
 # ed25519
 Erlang port program for ed25519 sign and verify from libsodium.
 
-This is a very simple implementation using a port program to access the libsodium functionality. Other, more integrated implementations with full functionality are available ([enacl](https://github.com/jlouis/enacl) or [salt](https://github.com/freza/salt)), but these require specialy built Erlang systems (with dirty schedulars.) I just needed the ed25519 sign and verify functions and very much rely on the Erlang distributions form [Erlang Solutions](https://www.erlang-solutions.com/downloads) which do not have dirty schedulars compiled in. Also, this was a good excersize in building a port program.
+This is a very simple implementation using a port program to access the libsodium functionality. Other, more integrated implementations with full functionality are available ([enacl](https://github.com/jlouis/enacl) or [salt](https://github.com/freza/salt)), but these require specialy built Erlang systems (with dirty schedulars.) I just needed the ed25519 sign and verify functions and very much rely on the Erlang distributions form [Erlang Solutions](https://www.erlang-solutions.com/downloads) which do not have dirty schedulars compiled in. Also, this was a good exercise in building a port program.
 
 ## Install
 First of all, install libsodium as described [here](http://doc.libsodium.org/installation/README.html).
