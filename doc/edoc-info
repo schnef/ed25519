@@ -1,0 +1,4 @@
+%% encoding: UTF-8
+{application,ed25519}.
+{packages,[]}.
+{modules,[ed25519,ed25519_app,ed25519_sup]}.

@@ -1,0 +1,207 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Module ed25519</title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css" title="EDoc">
+</head>
+<body bgcolor="white">
+<div class="navbar"><a name="#navbar_top"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
+<hr>
+
+<h1>Module ed25519</h1>
+<ul class="index"><li><a href="#types">Data Types</a></li><li><a href="#index">Function Index</a></li><li><a href="#functions">Function Details</a></li></ul>
+
+<p><b>Behaviours:</b> <a href="gen_server.html"><tt>gen_server</tt></a>.</p>
+
+<h2><a name="types">Data Types</a></h2>
+
+<h3 class="typedecl"><a name="type-curve25519_bytes">curve25519_bytes()</a></h3>
+<p><tt>curve25519_bytes() = &lt;&lt;_:'*'&gt;&gt;</tt></p>
+
+
+<h3 class="typedecl"><a name="type-curve25519_scaler_bytes">curve25519_scaler_bytes()</a></h3>
+<p><tt>curve25519_scaler_bytes() = &lt;&lt;_:'*'&gt;&gt;</tt></p>
+
+
+<h3 class="typedecl"><a name="type-ed25519_bytes">ed25519_bytes()</a></h3>
+<p><tt>ed25519_bytes() = &lt;&lt;_:'*'&gt;&gt;</tt></p>
+
+
+<h3 class="typedecl"><a name="type-ed25519_public_key">ed25519_public_key()</a></h3>
+<p><tt>ed25519_public_key() = &lt;&lt;_:'*'&gt;&gt;</tt></p>
+
+
+<h3 class="typedecl"><a name="type-ed25519_secret_key">ed25519_secret_key()</a></h3>
+<p><tt>ed25519_secret_key() = &lt;&lt;_:'*'&gt;&gt;</tt></p>
+
+
+<h3 class="typedecl"><a name="type-ed25519_seed">ed25519_seed()</a></h3>
+<p><tt>ed25519_seed() = &lt;&lt;_:'*'&gt;&gt;</tt></p>
+
+
+<h2><a name="index">Function Index</a></h2>
+<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#code_change-3">code_change/3</a></td><td></td></tr>
+<tr><td valign="top"><a href="#dh_scalarmult-2">dh_scalarmult/2</a></td><td>
+  Given a user's secret key and another user's public key, the
+  scalarmult() function computes a secret shared by the two
+  users.</td></tr>
+<tr><td valign="top"><a href="#dh_scalarmult_base-1">dh_scalarmult_base/1</a></td><td>
+  Given a user's secret key, the scalarmult_base() function computes
+  the user's public key.</td></tr>
+<tr><td valign="top"><a href="#ed25519_keypair-0">ed25519_keypair/0</a></td><td>
+  The ed25519_keypair function randomly generates a secret key and a
+  corresponding public key.</td></tr>
+<tr><td valign="top"><a href="#ed25519_keypair-1">ed25519_keypair/1</a></td><td>
+  The ed25519_keypair function with a seed as argument,
+  deterministically generates a secret key and a corresponding public
+  key.</td></tr>
+<tr><td valign="top"><a href="#ed25519_pk_to_curve25519-1">ed25519_pk_to_curve25519/1</a></td><td>
+  The ed25519_pk_to_curve25519() function converts an Ed25519 public
+  key ed25519_pk to a Curve25519 public key.</td></tr>
+<tr><td valign="top"><a href="#ed25519_sign-2">ed25519_sign/2</a></td><td>
+  The ed25519_sign() function signs the message using the secret key.</td></tr>
+<tr><td valign="top"><a href="#ed25519_sk_to_curve25519-1">ed25519_sk_to_curve25519/1</a></td><td>
+  The ed25519_sk_to_curve25519() function converts an Ed25519 secret
+  key ed25519_sk to a Curve25519 secret key.</td></tr>
+<tr><td valign="top"><a href="#ed25519_verify-3">ed25519_verify/3</a></td><td>
+  The ed25519_verify() function verifies that the signature is for
+  the given message.</td></tr>
+<tr><td valign="top"><a href="#handle_call-3">handle_call/3</a></td><td></td></tr>
+<tr><td valign="top"><a href="#handle_cast-2">handle_cast/2</a></td><td></td></tr>
+<tr><td valign="top"><a href="#handle_info-2">handle_info/2</a></td><td></td></tr>
+<tr><td valign="top"><a href="#helo-0">helo/0</a></td><td>
+  Say hello to the sodium library.</td></tr>
+<tr><td valign="top"><a href="#init-1">init/1</a></td><td></td></tr>
+<tr><td valign="top"><a href="#keypairs-0">keypairs/0</a></td><td>
+  The keypairs function randomly generates both a ed25519 and curve
+  25519 secret key and a corresponding public keypair.</td></tr>
+<tr><td valign="top"><a href="#keypairs-1">keypairs/1</a></td><td>
+  The keypairs function with a seed as argument,
+  deterministically generates both a ed25519 and curve 25519 secret key and a corresponding public
+  keypair.</td></tr>
+<tr><td valign="top"><a href="#start_link-0">start_link/0</a></td><td></td></tr>
+<tr><td valign="top"><a href="#terminate-2">terminate/2</a></td><td></td></tr>
+</table>
+
+<h2><a name="functions">Function Details</a></h2>
+
+<h3 class="function"><a name="code_change-3">code_change/3</a></h3>
+<div class="spec">
+<p><tt>code_change(OldVsn, State, Extra) -&gt; any()</tt></p>
+</div>
+
+<h3 class="function"><a name="dh_scalarmult-2">dh_scalarmult/2</a></h3>
+<div class="spec">
+<p><tt>dh_scalarmult(Curve25519_sk::<a href="#type-curve25519_scaler_bytes">curve25519_scaler_bytes()</a>, Curve25519_pk::<a href="#type-curve25519_scaler_bytes">curve25519_scaler_bytes()</a>) -&gt; {ok, Shared_secret::<a href="#type-curve25519_bytes">curve25519_bytes()</a>} | {error, Reason::term()}</tt><br></p>
+</div><p>
+  Given a user's secret key and another user's public key, the
+  scalarmult() function computes a secret shared by the two
+  users. This secret can then be used to authenticate and encrypt
+  messages between the two users.</p>
+
+<h3 class="function"><a name="dh_scalarmult_base-1">dh_scalarmult_base/1</a></h3>
+<div class="spec">
+<p><tt>dh_scalarmult_base(Curve25519_sk::<a href="#type-curve25519_scaler_bytes">curve25519_scaler_bytes()</a>) -&gt; {ok, Curve25519_pk::<a href="#type-curve25519_bytes">curve25519_bytes()</a>} | {error, Reason::term()}</tt><br></p>
+</div><p>
+  Given a user's secret key, the scalarmult_base() function computes
+  the user's public key.</p>
+
+<h3 class="function"><a name="ed25519_keypair-0">ed25519_keypair/0</a></h3>
+<div class="spec">
+<p><tt>ed25519_keypair() -&gt; {ok, {Ed25519_pk::<a href="#type-ed25519_public_key">ed25519_public_key()</a>, Ed25519_sk::<a href="#type-ed25519_secret_key">ed25519_secret_key()</a>}} | {error, Reason::term()}</tt><br></p>
+</div><p>
+  The ed25519_keypair function randomly generates a secret key and a
+  corresponding public key.</p>
+
+<h3 class="function"><a name="ed25519_keypair-1">ed25519_keypair/1</a></h3>
+<div class="spec">
+<p><tt>ed25519_keypair(Seed::<a href="#type-ed25519_seed">ed25519_seed()</a>) -&gt; {ok, {Ed25519_pk::<a href="#type-ed25519_public_key">ed25519_public_key()</a>, Ed25519_sk::<a href="#type-ed25519_secret_key">ed25519_secret_key()</a>}} | {error, Reason::term()}</tt><br></p>
+</div><p>
+  The ed25519_keypair function with a seed as argument,
+  deterministically generates a secret key and a corresponding public
+  key.</p>
+
+<h3 class="function"><a name="ed25519_pk_to_curve25519-1">ed25519_pk_to_curve25519/1</a></h3>
+<div class="spec">
+<p><tt>ed25519_pk_to_curve25519(Ed25519_pk::<a href="#type-ed25519_public_key">ed25519_public_key()</a>) -&gt; {ok, Curve25519_pk::<a href="#type-curve25519_scaler_bytes">curve25519_scaler_bytes()</a>} | {error, Reason::term()}</tt><br></p>
+</div><p>
+  The ed25519_pk_to_curve25519() function converts an Ed25519 public
+  key ed25519_pk to a Curve25519 public key.</p>
+
+<h3 class="function"><a name="ed25519_sign-2">ed25519_sign/2</a></h3>
+<div class="spec">
+<p><tt>ed25519_sign(Ed25519_sk::<a href="#type-ed25519_secret_key">ed25519_secret_key()</a>, Message::list()) -&gt; {ok, Signatuter::<a href="#type-ed25519_bytes">ed25519_bytes()</a>} | {error, Reason::term()}</tt><br></p>
+</div><p>
+  The ed25519_sign() function signs the message using the secret key.</p>
+
+<h3 class="function"><a name="ed25519_sk_to_curve25519-1">ed25519_sk_to_curve25519/1</a></h3>
+<div class="spec">
+<p><tt>ed25519_sk_to_curve25519(Ed25519_sk::<a href="#type-ed25519_secret_key">ed25519_secret_key()</a>) -&gt; {ok, Curve25519_sk::<a href="#type-curve25519_scaler_bytes">curve25519_scaler_bytes()</a>} | {error, Reason::term()}</tt><br></p>
+</div><p>
+  The ed25519_sk_to_curve25519() function converts an Ed25519 secret
+  key ed25519_sk to a Curve25519 secret key.</p>
+
+<h3 class="function"><a name="ed25519_verify-3">ed25519_verify/3</a></h3>
+<div class="spec">
+<p><tt>ed25519_verify(Ed25519_pk::<a href="#type-ed25519_public_key">ed25519_public_key()</a>, Message::list(), Signature::<a href="#type-ed25519_bytes">ed25519_bytes()</a>) -&gt; {ok, true | false} | {error, Reason::term()}</tt><br></p>
+</div><p>
+  The ed25519_verify() function verifies that the signature is for
+  the given message.</p>
+
+<h3 class="function"><a name="handle_call-3">handle_call/3</a></h3>
+<div class="spec">
+<p><tt>handle_call(Msg, From, State) -&gt; any()</tt></p>
+</div>
+
+<h3 class="function"><a name="handle_cast-2">handle_cast/2</a></h3>
+<div class="spec">
+<p><tt>handle_cast(Msg, State) -&gt; any()</tt></p>
+</div>
+
+<h3 class="function"><a name="handle_info-2">handle_info/2</a></h3>
+<div class="spec">
+<p><tt>handle_info(Info, State) -&gt; any()</tt></p>
+</div>
+
+<h3 class="function"><a name="helo-0">helo/0</a></h3>
+<div class="spec">
+<p><tt>helo() -&gt; any()</tt></p>
+</div><p>
+  Say hello to the sodium library.</p>
+
+<h3 class="function"><a name="init-1">init/1</a></h3>
+<div class="spec">
+<p><tt>init(X1) -&gt; any()</tt></p>
+</div>
+
+<h3 class="function"><a name="keypairs-0">keypairs/0</a></h3>
+<div class="spec">
+<p><tt>keypairs() -&gt; {ok, {Ed25519_pk::<a href="#type-ed25519_public_key">ed25519_public_key()</a>, Ed25519_sk::<a href="#type-ed25519_secret_key">ed25519_secret_key()</a>}, {Curve25519_pk::<a href="#type-curve25519_scaler_bytes">curve25519_scaler_bytes()</a>, Curve25519_sk::<a href="#type-curve25519_scaler_bytes">curve25519_scaler_bytes()</a>}} | {error, Reason::term()}</tt><br></p>
+</div><p>
+  The keypairs function randomly generates both a ed25519 and curve
+  25519 secret key and a corresponding public keypair.</p>
+
+<h3 class="function"><a name="keypairs-1">keypairs/1</a></h3>
+<div class="spec">
+<p><tt>keypairs(Seed::<a href="#type-ed25519_seed">ed25519_seed()</a>) -&gt; {ok, {Ed25519_pk::<a href="#type-ed25519_public_key">ed25519_public_key()</a>, Ed25519_sk::<a href="#type-ed25519_secret_key">ed25519_secret_key()</a>}, {Curve25519_pk::<a href="#type-curve25519_scaler_bytes">curve25519_scaler_bytes()</a>, Curve25519_sk::<a href="#type-curve25519_scaler_bytes">curve25519_scaler_bytes()</a>}} | {error, Reason::term()}</tt><br></p>
+</div><p>
+  The keypairs function with a seed as argument,
+  deterministically generates both a ed25519 and curve 25519 secret key and a corresponding public
+  keypair.</p>
+
+<h3 class="function"><a name="start_link-0">start_link/0</a></h3>
+<div class="spec">
+<p><tt>start_link() -&gt; any()</tt></p>
+</div>
+
+<h3 class="function"><a name="terminate-2">terminate/2</a></h3>
+<div class="spec">
+<p><tt>terminate(Reason, State) -&gt; any()</tt></p>
+</div>
+<hr>
+
+<div class="navbar"><a name="#navbar_bottom"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
+<p><i>Generated by EDoc, Mar 25 2015, 10:53:41.</i></p>
+</body>
+</html>

@@ -1,0 +1,4 @@
+#!/bin/sh
+
+erl -pa ../ed25519/ebin -pa deps/*/ebin
+
