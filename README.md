@@ -1,6 +1,8 @@
 # ed25519
 Erlang port program for ed25519 sign and verify from libsodium.
 
+This is a very simple implementation using a port program to access the libsodium functionality. Other, more integrated implementations with full functionality are available ([enacl](https://github.com/jlouis/enacl) or [salt](https://github.com/freza/salt)), but these require specialy built Erlang systems (with dirty schedulars.) I just needed the ed25519 sign and verify functions and very much rely on the Erlang distributions form [Erlang Solutions[(https://www.erlang-solutions.com/downloads) which do not have dirty schedulars compiled in. Also, this was a good excersize in building a port program.
+
 ## Install
 First of all, install libsodium as described [here](http://doc.libsodium.org/installation/README.html).
 Get [rebar](https://github.com/rebar/rebar/wiki) (not rebar3). 
@@ -35,3 +37,6 @@ ok
 
 ```
 See the docs (also the libsodium) for more functions and details. 
+
+## Tests
+The eunit tests use the test data from the [sign.input](http://ed25519.cr.yp.to/python/sign.input) from the original Ed25519 high-speed high-security signatures Alternate implementations [software](http://ed25519.cr.yp.to/software.html) page. All 1024 test vectors should run just fine.
