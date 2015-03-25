@@ -38,7 +38,7 @@ static ei_x_buff make_error(const char *text);
 static int get_key(const byte *buf, int *index, byte *key, const int len);
 static byte *get_msg(const byte *buf, int *index, long *msglen);
 static byte *read_port_msg(void);
-static void write_port_msg(const ei_x_buff result);
+static void write_port_msg(const ei_x_buff *result);
 static int read_exact(byte *buffer, const int len);
 static int write_exact(const byte *buffer, const int len);
 static void *safe_malloc(const int size);
@@ -105,7 +105,7 @@ int main(int argc, char *argv[]) {
   for (;;) {
     buffer = read_port_msg();
     result = process(buffer);
-    write_port_msg(result);
+    write_port_msg(&result);
     ei_x_free(&result);
     free(buffer);
   }
@@ -471,16 +471,16 @@ static byte *read_port_msg() {
   return buffer;
 }
 
-static void write_port_msg(const ei_x_buff result) {
+static void write_port_msg(const ei_x_buff *result) {
   byte hd[header_size];
-  int i, s = result.buffsz;
+  int i, s = result->buffsz;
 
   for (i = header_size - 1; i >= 0; --i) {
     hd[i] = s & 0xff;
     s >>= 8;
   }
   write_exact(hd, header_size);
-  write_exact(result.buff, result.buffsz);
+  write_exact(result->buff, result->buffsz);
 }
 
 #ifdef WIN32
