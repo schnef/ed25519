@@ -5,6 +5,9 @@ This is a very simple implementation using a port program to access the libsodiu
 
 ## Install
 First of all, install libsodium as described [here](http://doc.libsodium.org/installation/README.html).
+
+NB: I have added a function to libsodium to verify a message using the curve25519 public key instead of the ed25519 public key. It is in the file `libsodium/src/libsodium/crypto_sign/ed25519/ref10/open.c` and `libsodium/src/libsodium/include/sodium/crypto_sign_ed25519.h`. You can find these files [here](https://github.com/schnef/libsodium). So before configuring and compiling libsodium, add these changes to your copy of libsodium.
+
 Get [rebar](https://github.com/rebar/rebar/wiki) (not rebar3). 
 Run
 ```
@@ -40,3 +43,6 @@ See the docs (also the libsodium) for more functions and details.
 
 ## Tests
 The eunit tests use the test data from the [sign.input](http://ed25519.cr.yp.to/python/sign.input) from the original Ed25519 high-speed high-security signatures Alternate implementations [software](http://ed25519.cr.yp.to/software.html) page. All 1024 test vectors should run just fine.
+```
+rebar eunit
+```
