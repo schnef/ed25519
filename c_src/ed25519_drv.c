@@ -34,6 +34,7 @@ static ei_x_buff process_dh_scalarmult_base(const byte *buf, int index_start);
 static ei_x_buff process_dh_scalarmult(const byte *buf, int index_start);
 static ei_x_buff process_ed25519_sign(const byte *buf, int index_start);
 static ei_x_buff process_ed25519_verify(const byte *buf, int index_start);
+static ei_x_buff process_curve25519_verify(const byte *buf, int index_start);
 static ei_x_buff make_error(const char *text);
 static int get_key(const byte *buf, int *index, byte *key, const int len);
 static byte *get_msg(const byte *buf, int *index, long *msglen);
@@ -62,7 +63,8 @@ static const func_t funcs[] = {
   {process_dh_scalarmult_base, 1},
   {process_dh_scalarmult, 2},
   {process_ed25519_sign, 2},
-  {process_ed25519_verify, 3}
+  {process_ed25519_verify, 3},
+  {process_curve25519_verify, 3}
 };
 
 static const int funcs_size = sizeof(funcs) / sizeof(funcs[0]);
@@ -401,6 +403,39 @@ static ei_x_buff process_ed25519_verify(const byte *buf, int index_start) {
 				    (const unsigned char *)msg, 
 				    msglen, 
 				    (const unsigned char *)pk) == 0) {
+      ei_x_encode_boolean(&result, 1);
+    } else {
+      ei_x_encode_boolean(&result, 0);
+    }
+    free(msg);
+  }
+  return result;
+}
+
+static ei_x_buff process_curve25519_verify(const byte *buf, int index_start) {
+  ei_x_buff result;
+  int index = index_start;
+  long msglen = 0;
+  byte pk[crypto_scalarmult_SCALARBYTES], *msg = NULL, sig[crypto_sign_BYTES];
+
+  // Public_key, Message, Signature
+
+  if (!get_key(buf, &index, pk, crypto_scalarmult_SCALARBYTES)) {
+    result = make_error("Public key error");
+  } else if ((msg = get_msg(buf, &index, &msglen)) == NULL) {
+    result = make_error("Msg error");
+  } else if (!get_key(buf, &index, sig, crypto_sign_BYTES)) {
+    result = make_error("Signature error");
+  } else {
+
+    ei_x_new_with_version(&result);
+    ei_x_encode_tuple_header(&result, 2);
+    ei_x_encode_atom(&result, "ok"); 
+
+    if (crypto_sign_verify_curve25519_detached((const unsigned char *)sig, 
+					       (const unsigned char *)msg, 
+					       msglen, 
+					       (const unsigned char *)pk) == 0) {
       ei_x_encode_boolean(&result, 1);
     } else {
       ei_x_encode_boolean(&result, 0);
