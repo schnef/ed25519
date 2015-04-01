@@ -9,7 +9,7 @@
 	 ed25519_keypair/0,  ed25519_keypair/1,
 	 ed25519_pk_to_curve25519/1, ed25519_sk_to_curve25519/1,
 	 dh_scalarmult_base/1, dh_scalarmult/2,
-	 ed25519_sign/2, ed25519_verify/3, curve25519_verify/3,
+	 ed25519_sign/2, ed25519_verify/3,
 	 helo/0]).
 
 %% gen_server callbacks
@@ -150,18 +150,6 @@ ed25519_verify(Ed25519_pk, Message, Signature) ->
     gen_server:call(?SERVER, {ed25519_verify, Ed25519_pk, Message, Signature}).
 
 %% @doc
-%% The curve25519_verify() function verifies that the signature is for
-%% the given message. It first converts the curve25519 public key to a
-%% ed25519 public key before verifying the signature.
-%% @end
--spec curve25519_verify(Curve25519_pk :: curve25519_scaler_bytes(), Message :: list(), 
-			Signature :: ed25519_bytes()) 
-		       -> {ok, true | false} |
-			  {error, Reason :: term()}.
-curve25519_verify(Curve25519_pk, Message, Signature) ->
-    gen_server:call(?SERVER, {curve25519_verify, Curve25519_pk, Message, Signature}).
-
-%% @doc
 %% Say hello to the sodium library.
 %% @end
 helo() ->
@@ -244,9 +232,7 @@ encode({dh_scalarmult, Curve25519_sk, Curve25519_pk}) ->
 encode({ed25519_sign, Ed25519_sk, Message}) ->
     term_to_binary({9, Ed25519_sk, Message});
 encode({ed25519_verify, Ed25519_pk, Message, Signature}) ->
-    term_to_binary({10, Ed25519_pk, Message, Signature});
-encode({curve25519_verify, Curve25519_pk, Message, Signature}) ->
-    term_to_binary({11, Curve25519_pk, Message, Signature}).
+    term_to_binary({10, Ed25519_pk, Message, Signature}).
 
 %% @private
 decode(Data) ->
