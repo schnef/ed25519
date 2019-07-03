@@ -23,12 +23,11 @@ helo(_) ->
     [?_assertEqual(ok, ed25519:helo())].
     
 process_test_vectors(_) ->
-    {ok, F} = file:open("../test/sign.input", read),
+    {ok, F} = file:open("test/sign.input", read),
     Result = process_vectors(F, 1),
     [?_assert(Result)].
 
 process_vectors(File, Acc) ->
-    %error_logger:info_msg("Line ~p", [Acc]),
     case io:get_line(File, "") of
 	eof ->
 	    file:close(File),
@@ -56,9 +55,6 @@ doit(Line) ->
     Public_key = to_bin(Pk),
     Message = to_list(M),
     Signature = to_bin(S),
-    %% error_logger:info_msg("Message ~p", [Message]),
-    %% error_logger:info_msg("Sign ~p l ~p", [Sign, byte_size(Secret_key)]),
-    %% error_logger:info_msg("Calc Sign ~p", [ed25519:ed25519_sign(Secret_key, Message)]),
     {ok, Signature} =:= ed25519:ed25519_sign(Secret_key, Message) andalso
 	{ok, true} =:= ed25519:ed25519_verify(Public_key, Message, Signature).
 

@@ -1,7 +1,7 @@
 {application, ed25519,
  [
-  {description, ""},
-  {vsn, "1"},
+  {description, "Erlang port program for ed25519 sign and verify from libsodium "},
+  {vsn, "2"},
   {registered, []},
   {applications, [
                   kernel,

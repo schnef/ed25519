@@ -2,7 +2,7 @@
 
 -behaviour(gen_server).
 
--include_lib("../include/ed25519.hrl").
+-include("ed25519.hrl").
 
 %% API
 -export([start_link/0, keypairs/0, keypairs/1,
@@ -162,7 +162,7 @@ start_link() ->
 %%% gen_server callbacks
 %%%===================================================================
 
-init([]) ->
+init(_) ->
     Port = case code:priv_dir(ed25519) of % argument is the name of the application
 	       {error, _} ->
 		   exit(error);
@@ -170,7 +170,6 @@ init([]) ->
 		   open_port({spawn, filename:join([Priv_dir, "ed25519_drv"])},
 			     [binary, {packet, 4}, exit_status])
 	   end,
-    % error_logger:info_msg("Port ~p", [erlang:port_info(Port)]),
     {ok, #state{port = Port}}.
 
 handle_call(Msg, _From, #state{port = Port} = State) ->
@@ -248,6 +247,6 @@ decode_exit_status(6) -> error_logger:error_msg("Wrong packet body size");
 decode_exit_status(7) -> error_logger:error_msg("Could not open library");
 decode_exit_status(8) -> error_logger:error_msg("Wrong keader size argument passed to program");
 decode_exit_status(Status) when Status > 128 ->
-    error_logger:error_msg("Port terminated with signal: ~p", [Status - 128]);
-decode_exit_status(Status) -> error_logger:error_msg("Port terminated with status: ~p", [Status]).
+    logger:error("Port terminated with signal: ~p", [Status - 128]);
+decode_exit_status(Status) -> logger:error("Port terminated with status: ~p", [Status]).
 

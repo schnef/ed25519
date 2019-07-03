@@ -1,24 +1,45 @@
 # ed25519
+
 Erlang port program for ed25519 sign and verify from libsodium.
 
-This is a very simple implementation using a port program to access the libsodium functionality. Other, more integrated implementations with full functionality are available ([enacl](https://github.com/jlouis/enacl) or [salt](https://github.com/freza/salt)), but these require specialy built Erlang systems (with dirty schedulars.) I just needed the ed25519 sign and verify functions and very much rely on the Erlang distributions form [Erlang Solutions](https://www.erlang-solutions.com/downloads) which do not have dirty schedulars compiled in. Also, this was a good exercise in building a port program.
+This is a very simple implementation using a port program to access
+the libsodium functionality. Other, more integrated implementations
+with full functionality are available
+([enacl](https://github.com/jlouis/enacl) or
+[salt](https://github.com/freza/salt)).
 
 ## Install
-First of all, install libsodium as described [here](http://doc.libsodium.org/installation/README.html).
 
-Get [rebar](https://github.com/rebar/rebar/wiki) (not rebar3). 
-Run
+First of all, install libsodium as described
+[here](http://doc.libsodium.org/installation/README.html). 
+
 ```
-$ rebar clean compile eunit doc
+$ wget https://download.libsodium.org/libsodium/releases/LATEST.tar.gz
+$ tar zxf LATEST.tar.gz
+$ cd libsodium-stable/
+~/libsodium-stable$ ./configure
+~/libsodium-stable$ make -j 4
+~/libsodium-stable$ sudo make install
+~/libsodium-stable$ sudo /sbin/ldconfig
 ```
+This will install the shared library under `/usr/local/lib`.
+Now go into the `ed25519$` directory and run:
+
+```
+$ rebar3 clean compile
+$ rebar3 eunit
+```
+
 This was tested for Debian. Should work for Windows, maybe with some small tweaks.
 
 ## Usage
-Start a Erlang shell
-```
-Erlang/OTP 17 [erts-6.3] [source] [64-bit] [smp:2:2] [async-threads:10] [kernel-poll:false]
 
-Eshell V6.3  (abort with ^G)
+Start an Erlang shell
+```
+$ rebar3 shell
+Erlang/OTP 22 [erts-10.4] [source] [64-bit] [smp:2:2] [ds:2:2:10] [async-threads:1]
+
+Eshell V10.4  (abort with ^G)
 1> application:start(ed25519).
 ok
 2> {ok, {Public_key, Secret_key}} = ed25519:ed25519_keypair().
@@ -39,7 +60,13 @@ ok
 See the docs (also the libsodium) for more functions and details. 
 
 ## Tests
-The eunit tests use the test data from the [sign.input](http://ed25519.cr.yp.to/python/sign.input) from the original Ed25519 high-speed high-security signatures Alternate implementations [software](http://ed25519.cr.yp.to/software.html) page. All 1024 test vectors should run just fine.
+
+The eunit tests use the test data from the
+ [sign.input](http://ed25519.cr.yp.to/python/sign.input) from the
+ original Ed25519 high-speed high-security signatures Alternate
+ implementations [software](http://ed25519.cr.yp.to/software.html)
+ page. All 1024 test vectors should run just fine.
+
 ```
-rebar eunit
+rebar3 eunit
 ```
